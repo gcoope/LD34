@@ -18,24 +18,21 @@ public class Platform : MonoBehaviour {
 	}
 
 	public void EnabledAsObstacle() {
-		// Choose randomly to be a thing - choose percentage chance for each type
-		int chance = Random.Range(0,100);
+		int type = Random.Range(0, 2);
 
-		if(chance > 70) {
-			int type = Random.Range(0, 2);
-
-			if(type == 0) {
-				StartBlinkingObstacle();
-			} else if(type == 1) {
-				AddSpikesAndBeginSpiking();
-			}
+		if(type == 0) {
+			StartBlinkingObstacle();
+		} else if(type == 1) {
+			AddSpikesAndBeginSpiking();
 		}
 	}
 
 	public void PlayParticles() {
 		particles.Play();
+		DOTween.Kill(myRenderer.material);
 		myRenderer.material.color = playerMat.color;
 		startColour = playerMat.color;
+
 	}
 
 	private void StopStuff(EventObject evt) {
@@ -49,7 +46,7 @@ public class Platform : MonoBehaviour {
 	private void StartBlinkingObstacle() {
 		startColour = myRenderer.material.color;
 		myRenderer.material.DOColor(Color.black, 2f).OnComplete(()=>{
-			myRenderer.enabled = false;
+			if(myRenderer != null) myRenderer.enabled = false;
 			myCollider.enabled = false;
 			StartCoroutine("BeInactive");
 		}).SetDelay(Random.Range(1,4f));
@@ -58,11 +55,11 @@ public class Platform : MonoBehaviour {
 	IEnumerator BeInactive() {
 		yield return new WaitForSeconds(1);
 		myRenderer.enabled = true;
+		myCollider.enabled = true;
 		myRenderer.material.DOColor(startColour, 0.5f).OnComplete(()=>{ StartCoroutine("BeActive"); });
 	}
 
 	IEnumerator BeActive() {
-		myCollider.enabled = true;
 		yield return new WaitForSeconds(3);
 		StartBlinkingObstacle();
 	}
@@ -74,5 +71,4 @@ public class Platform : MonoBehaviour {
 		spike.transform.SetParent(transform);
 		spike.transform.DOLocalMoveY(-1.75f, 1.5f).SetLoops(-1, LoopType.Yoyo).SetDelay(Random.Range(0,4));
 	}
-
 }

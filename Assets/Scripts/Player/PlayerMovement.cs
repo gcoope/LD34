@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour {
 	void Update() {
 		RecieveInput();
 
-		if(rBody.velocity.magnitude > 8) { // TODO post
+		if(rBody.velocity.magnitude > 8) { // falling
 			if(!gameOver) {
 				soundManager.PlayGameLoseSound();
 				gameObject.DispatchGlobalEvent(GameEvent.EndGame);
@@ -37,7 +37,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void RecieveInput() {	
-
 		if(Input.GetKeyDown(KeyCode.LeftArrow)) Left();
 		else if(Input.GetKeyDown(KeyCode.RightArrow)) Right();
 		if(Input.GetKeyDown(KeyCode.R)) Restart();
@@ -66,6 +65,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void Restart() {
+		gameStarted = false;
 		canJump = true;
 		gameOver = false;
 		rBody.velocity = Vector3.zero;
@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour {
 			if(!gameOver) {
 				soundManager.PlayGameWinSound();
 				gameObject.DispatchGlobalEvent(GameEvent.TookStep);
-				gameObject.DispatchGlobalEvent(GameEvent.EndGame, new object[]{ "won" });
+				gameObject.DispatchGlobalEvent(GameEvent.EndGame, new object[]{ GameEvent.WonMessage });
 				gameOver = true;
 				col.gameObject.GetComponent<Platform>().PlayParticles();
 			}

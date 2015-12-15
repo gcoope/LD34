@@ -5,4 +5,7 @@
 	public static string RestartGame = "GameEvent.RestartGame";
 	public static string TookStep = "GameEvent.TookStep";
 	public static string SendLastScore = "GameEvent.SendLastScore";
+	public static string WonMessage = "GameEvent.WonMessage";
+
+
 }

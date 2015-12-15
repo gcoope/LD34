@@ -36,15 +36,19 @@ public class MenuController : MonoBehaviour {
 	
 	private void Show(EventObject evt) {
 
-		// check if good or bad eng
+		// check if good or bad ending
 		if(evt.Params != null) {
 			if(evt.Params[0] != null) {
-				if(evt.Params[0].ToString() == "won") {
+				if(evt.Params[0].ToString() == GameEvent.WonMessage) {
 					gameOverText.text = "YOU WON!";
 				} else {
 					gameOverText.text = "YOU LOST!";
 				}
+			} else {
+				gameOverText.text = "YOU LOST!";
 			}
+		} else {
+			gameOverText.text = "YOU LOST!";
 		}
 
 		uiPanel.SetActive(true);
@@ -53,8 +57,6 @@ public class MenuController : MonoBehaviour {
 	}
 
 	private void Hide(EventObject evt) {
-//		float a = cGroup.alpha;
-//		DOTween.To(()=> a, x => a = x, 0, 0.25f).OnUpdate(()=> UpdateAlpha(a)).OnComplete(()=>{ uiPanel.SetActive(false); });
 		cGroup.alpha = 0;
 		uiPanel.SetActive(false);
 	}

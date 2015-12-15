@@ -47,7 +47,28 @@ public class LevelGenerator : MonoBehaviour {
 
 			if(i < amountToSpawn) {
 				if(g.GetComponent<Platform>() != null && i != amountToSpawn - 1) {
-					g.GetComponent<Platform>().EnabledAsObstacle();
+
+					float chanceOfObstacle = 1f;
+
+					if(i > 20) {
+						chanceOfObstacle = 0.75f; // 20%
+					} 
+					if(i > 40) {
+						chanceOfObstacle = 0.6f;
+					} 
+					if(i > 60) {
+						chanceOfObstacle = 0.5f;
+					} 
+					if(i > 80) {
+						chanceOfObstacle = 0.4f;
+					}
+
+					float c = UnityEngine.Random.value;
+					if(c > chanceOfObstacle) {
+						g.GetComponent<Platform>().EnabledAsObstacle();
+					}
+
+
 				}
 			}
 
